@@ -42,12 +42,14 @@ Kết quả: `reports/performance.csv`, `reports/classification.csv`, `reports/e
 - **Benchmark** đánh giá trên cùng khoảng out-of-sample với các mô hình ML.
 
 ## Kết quả
-> Điền sau khi chạy với dữ liệu thật (đừng dùng số từ chế độ `--synthetic`).
 
-| Strategy | CAGR | Sharpe | MaxDD |
-|---|---|---|---|
-| XGBoost | | | |
-| Buy & Hold | | | |
+| Strategy      |  CAGR | Sharpe |  MaxDD |
+| ------------- | ----: | -----: | -----: |
+| LogReg        | 13.3% |  1.066 | -26.8% |
+| Random Forest | 13.3% |  1.046 | -31.7% |
+| XGBoost       | 11.7% |  1.040 | -27.1% |
+| Buy & Hold    | 17.7% |  1.035 | -38.3% |
+
 
 ## Hạn chế
 - Dự báo hướng giá ngày kế tiếp có tín hiệu rất yếu; AUC gần 0.5 là bình thường.
@@ -56,10 +58,10 @@ Kết quả: `reports/performance.csv`, `reports/classification.csv`, `reports/e
 
 ## Chạy với dữ liệu lớn (S&P 500, 15+ năm)
 ```bash
-python run.py --universe sp500 --jobs -1 --fast                  # tất cả CPU core, mô hình nhẹ hơn
-python run.py --universe sp500 --models LogReg XGBoost           # bỏ RandomForest (chậm nhất)
+python run.py --universe sp500 --jobs -1 --fast                 
+python run.py --universe sp500 --models LogReg XGBoost        
 python run.py --universe sp500 --n-tickers 100 --start 2005-01-01
-python run.py --universe sp500 --cost-bps 10                     # đổi phí: dùng lại checkpoint, chạy vài giây
+python run.py --universe sp500 --cost-bps 10               
 ```
 - Tải dữ liệu theo batch 50 mã, cache Parquet ở `data/raw/` (chạy lại chỉ tải mã còn thiếu).
 - Mỗi mã chạy trên 1 process (joblib); dự báo được checkpoint ở `data/checkpoints/` nên bị ngắt vẫn chạy tiếp được. Dùng `--fresh` để train lại.
